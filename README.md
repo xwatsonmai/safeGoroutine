@@ -43,3 +43,5 @@ func test(a, b int) {
 - [ ] 增加Logger / Add Logger
 - [ ] 增加可控制的协程并发数 / Add controllable coroutine concurrency
 - [ ] 增加协程观察者 / Add coroutine observer
+
+## 有更多需求请在issue中提出 / If you have more requirements, please raise them in the issue
