@@ -39,9 +39,20 @@ func test(a, b int) {
 
 ```
 
+## 可选的配置/Optional configuration
+```go
+// 设置协程的panic处理函数 / Set the panic handling function of the coroutine
+goroutine.WithPanicHandler(func(err error) {
+    fmt.Println("panic:", err)
+})
+
+// 设置协程结束后，自动执行WaitGroup.Done() / Set the coroutine to automatically execute WaitGroup.Done() after it ends
+goroutine.WithWaitGroupDone{wg: &sync.WaitGroup{}}
+```
+
 ## 后续计划/Next Plan
 - [ ] 增加Logger / Add Logger
 - [ ] 增加可控制的协程并发数 / Add controllable coroutine concurrency
 - [ ] 增加协程观察者 / Add coroutine observer
 
-## 有更多需求请在issue中提出 / If you have more requirements, please raise them in the issue
+**有更多需求请在issue中提出 / If you have more requirements, please raise them in the issue**
