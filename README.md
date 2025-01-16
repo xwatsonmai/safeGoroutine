@@ -9,14 +9,14 @@ package main
 import (
 	"fmt"
 	"github.com/xwatsonmai/safeGoroutine/goroutine"
-
 	"time"
 )
 
 func main() {
 	goroutine.Go(
-		test,
-		goroutine.WithInput{1, 2}, // 传入参数 / input parameters
+		func() {
+			test(1, 2)
+		},
 		goroutine.WithPanicHandler(func(err error) {
 			fmt.Println("panic:", err)
 		}), // panic处理 / panic handler

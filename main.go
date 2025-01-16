@@ -3,14 +3,14 @@ package main
 import (
 	"fmt"
 	"github.com/xwatsonmai/safeGoroutine/goroutine"
-
 	"time"
 )
 
 func main() {
 	goroutine.Go(
-		test,
-		goroutine.WithInput{1, 2},
+		func() {
+			test(1, 2)
+		},
 		goroutine.WithPanicHandler(func(err error) {
 			fmt.Println("panic:", err)
 		}),

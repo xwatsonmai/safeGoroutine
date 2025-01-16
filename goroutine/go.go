@@ -3,7 +3,7 @@ package goroutine
 import (
 	"context"
 	"github.com/pkg/errors"
-	"reflect"
+	"sync"
 )
 
 //var poolCount = 99999999
@@ -12,24 +12,13 @@ type goRoutine struct {
 	ctx          context.Context
 	input        []any
 	panicHandler func(err error)
+	wg           *sync.WaitGroup
 }
 
-func Go(function any, opts ...IGoRoutineOption) error {
+func Go(function func(), opts ...IGoRoutineOption) error {
 	gr := &goRoutine{}
 	for _, opt := range opts {
 		opt.With(gr)
-	}
-	fnValue := reflect.ValueOf(function)
-	fnType := fnValue.Type()
-	if fnType.Kind() != reflect.Func {
-		return errors.New("第一个入参必须是函数")
-	}
-	if len(gr.input) != fnType.NumIn() {
-		return errors.New("参数数量与函数的输入参数不匹配，请确认使用goroutine.WithInput{}传入参数")
-	}
-	in := make([]reflect.Value, len(gr.input))
-	for i, arg := range gr.input {
-		in[i] = reflect.ValueOf(arg)
 	}
 	go func() {
 		defer func() {
@@ -39,7 +28,7 @@ func Go(function any, opts ...IGoRoutineOption) error {
 				}
 			}
 		}()
-		fnValue.Call(in)
+		function()
 	}()
 	return nil
 }

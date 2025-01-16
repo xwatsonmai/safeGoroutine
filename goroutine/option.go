@@ -1,6 +1,9 @@
 package goroutine
 
-import "context"
+import (
+	"context"
+	"sync"
+)
 
 type IGoRoutineOption interface {
 	With(*goRoutine)
@@ -26,4 +29,12 @@ type WithPanicHandler func(err error)
 
 func (w WithPanicHandler) With(gr *goRoutine) {
 	gr.panicHandler = w
+}
+
+type WithWaitGroup struct {
+	Wg *sync.WaitGroup
+}
+
+func (w WithWaitGroup) With(gr *goRoutine) {
+	gr.wg = w.Wg
 }
