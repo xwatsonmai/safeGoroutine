@@ -28,6 +28,9 @@ func Go(function func(), opts ...IGoRoutineOption) error {
 				}
 			}
 		}()
+		if gr.wg != nil {
+			defer gr.wg.Done()
+		}
 		function()
 	}()
 	return nil

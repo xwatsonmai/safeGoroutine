@@ -3,10 +3,13 @@ package main
 import (
 	"fmt"
 	"github.com/xwatsonmai/safeGoroutine/goroutine"
+	"sync"
 	"time"
 )
 
 func main() {
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
 	goroutine.Go(
 		func() {
 			test(1, 2)
@@ -14,8 +17,10 @@ func main() {
 		goroutine.WithPanicHandler(func(err error) {
 			fmt.Println("panic:", err)
 		}),
+		goroutine.WithWaitGroupDone{Wg: wg},
 	)
-	time.Sleep(time.Second * 51)
+	wg.Wait()
+	//time.Sleep(time.Second * 51)
 }
 
 func test(a, b int) {
