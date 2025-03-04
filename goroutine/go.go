@@ -2,7 +2,7 @@ package goroutine
 
 import (
 	"context"
-	"github.com/pkg/errors"
+	"fmt"
 	"sync"
 )
 
@@ -23,8 +23,9 @@ func Go(function func(), opts ...IGoRoutineOption) error {
 	go func() {
 		defer func() {
 			if err := recover(); err != nil {
+				errData := fmt.Errorf("%v", err)
 				if gr.panicHandler != nil {
-					gr.panicHandler(errors.New(err.(string)))
+					gr.panicHandler(errData)
 				}
 			}
 		}()
